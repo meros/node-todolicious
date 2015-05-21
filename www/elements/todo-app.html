@@ -1,0 +1,15 @@
+<link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="import" href="todo-bullet.html">
+<polymer-element name="todo-app" attributes="model">
+  <template>
+    <template repeat="{{ bullet in model.bullets }}">
+      <todo-bullet model="{{ bullet }}" />
+    </template>
+  </template>
+  <script>
+    Polymer('todo-app',
+    {
+        model: [],
+    });
+  </script>
+</polymer-element>
