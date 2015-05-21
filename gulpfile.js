@@ -16,7 +16,7 @@ gulp.task('nodemon',
 	  function () {
 	      console.log('serving');
 	      nodemon({
-		      script: 'soundboard.js',
+		      script: 'todolicious.js',
 			  ext: 'js'}).on(
 					 'restart',
 					 ['bower']);})

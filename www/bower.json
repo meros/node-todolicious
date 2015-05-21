@@ -1,7 +1,7 @@
 {
-  "name": "www-soundboard",
-  "version": "0.0.0",
-  "homepage": "https://github.com/meros/node-soundboard",
+  "name": "node-todolicious",
+  "version": "0.0.1",
+  "homepage": "https://github.com/meros/node-todolicious",
   "authors": [
     "Alexander Schrab <alexander.schrab@gmail.com>"
   ],
@@ -14,13 +14,6 @@
     "tests"
   ],
   "dependencies": {
-    "core-ajax": "Polymer/core-ajax",
-    "paper-elements": "polymer/paper-elements",
-    "core-elements": "Polymer/core-elements",
-    "core-image": "Polymer/core-image",
-    "paper-ripple": "Polymer/paper-ripple"
-  },
-  "resolutions": {
-    "webcomponentsjs": "0.7.0"
+    "polymer": "Polymer/polymer#^0.5.5"
   }
 }

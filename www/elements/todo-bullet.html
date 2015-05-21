@@ -1,0 +1,14 @@
+<link rel="import" href="../bower_components/polymer/polymer.html">
+<polymer-element name="todo-bullet" attributes="model">
+  <template>
+    <div>
+      {{model}}
+    </div>
+  </template>
+  <script>
+    Polymer('todo-bullet',
+    {
+        model: [],
+    });
+  </script>
+</polymer-element>

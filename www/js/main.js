@@ -13,4 +13,4 @@ requirejs.config({
     }
 });
 
-require(['apps/soundboard']);
+require(['apps/todolicious']);
