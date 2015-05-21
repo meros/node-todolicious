@@ -1,5 +1,6 @@
-Simple TODO-app
+TODOlicious
 ---
-Current status and plans
+Simple TODO-app based on Workflowy
+Status
 ---
-Initial skeleton, will be similar to Workflowy, based on web components and a node.js server backing
+Initial skeleton only, polymer web components and a node.js server backing
