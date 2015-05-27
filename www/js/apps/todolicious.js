@@ -10,4 +10,3 @@ define(["jquery"],
                  bullets: []
              }] };
     });
-    
