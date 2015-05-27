@@ -1,15 +1,35 @@
 <link rel="import" href="../bower_components/polymer/polymer.html">
 <link rel="import" href="todo-bullet.html">
+<link rel="import" href="todo-keyboard.html">
 <polymer-element name="todo-app" attributes="model">
   <template>
-    <template repeat="{{ bullet in model.bullets }}">
-      <todo-bullet model="{{ bullet }}" />
-    </template>
+    <todo-keyboard id="keyboard" on-pressed-tab="{{ onPressedTab }}" on-pressed-up="{{ onPressedUp }}" on-pressed-down="{{ onPressedDown }}"></todo-keyboard>
+    <todo-bullet id="root-bullet" model="{{ model }}"></todo-bullet>
   </template>
   <script>
     Polymer('todo-app',
     {
-        model: [],
+        ready: function() {
+          this.selected = this.$['root-bullet'];
+        },
+        
+        selected: null,
+        selectedChanged: function (oldVal, newVal) {
+          if (oldVal) {
+            oldVal.selected = false;
+          }
+          
+          if (newVal) {
+            newVal.selected = true;
+          }
+        },
+        model: {},
+        onPressedTab: function(e, detail) {
+          this.$['root-bullet'].indent(detail.shift);
+        },
+        onPressedDown: function(e, detail) {
+          this.selected = this.$['root-bullet'].select('next');
+        },
     });
   </script>
 </polymer-element>

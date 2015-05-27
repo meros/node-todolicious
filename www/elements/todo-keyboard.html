@@ -1,0 +1,26 @@
+<link rel="import" href="../bower_components/polymer/polymer.html">
+<polymer-element name="todo-keyboard" attributes="">
+    <script>
+        Polymer('todo-keyboard', {
+            created: function() {
+                var that = this;
+                var keys = {
+                    9: 'pressed-tab', // TAB
+                    38: 'pressed-up', // UP
+                    40: 'pressed-down' // DOWN
+                };
+        
+                document.onkeydown = function(e) {
+                    if (e.keyCode in keys) {
+                        that.fire(
+                            keys[e.keyCode], {
+                                shift: !!e.shiftKey,
+                                alt: !!e.altKey,
+                                ctrl: !!e.ctrlKey});
+                        e.preventDefault();
+                    }
+                };        
+            }
+        });
+    </script>
+</polymer-element>

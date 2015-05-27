@@ -1,14 +1,29 @@
 <link rel="import" href="../bower_components/polymer/polymer.html">
-<polymer-element name="todo-bullet" attributes="model">
+<polymer-element name="todo-bullet" attributes="parentElement model indent selected">
   <template>
-    <div>
-      {{model}}
-    </div>
+    <li>{{model.content}}
+      <template if="{{ selected }}">
+        TODO: SELECTED
+      </template>
+      <ul>
+        <template repeat="{{ bullet in model.bullets }}">          
+          <todo-bullet model="{{ bullet }}" parentElement="{{ this }}">
+        </template>
+        <template if="{{ parentElement !== null }}">
+          TODO: HAS PARENT!
+        </template>
+      </ul>
+    </li>
   </template>
   <script>
     Polymer('todo-bullet',
     {
-        model: [],
+        selected: false,
+        parentElement: null,
+        model: {},
+        indent: function(reverse) {
+          this.model.content += reverse?"Decrease":"Increase";  
+        }
     });
   </script>
 </polymer-element>
