@@ -1,6 +1,6 @@
 {
-  "name": "node-todolicious",
-  "version": "0.0.1",
+  "name": "todolicious",
+  "version": "0.0.0",
   "homepage": "https://github.com/meros/node-todolicious",
   "authors": [
     "Alexander Schrab <alexander.schrab@gmail.com>"
@@ -14,6 +14,6 @@
     "tests"
   ],
   "dependencies": {
-    "polymer": "Polymer/polymer#^0.5.5"
+    "polymer": "Polymer/polymer#^1.0.0"
   }
 }
