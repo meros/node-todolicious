@@ -1,7 +1,6 @@
 <link rel="import" href="../bower_components/polymer/polymer.html">
 <link rel="import" href="./todo-bullet.html">
 <link rel="import" href="./todo-keyboard.html">
-  
 <script src="http://code.jquery.com/jquery-2.1.4.min.js"></script>
 
 <dom-module id="todo-app">
@@ -39,8 +38,32 @@ Polymer({
     this.$['rootBullet'].onIndent(detail.shift);
   },
   
+  getSelectedBulletIndex: function() {
+    var bullets = $("todo-bullet");
+    var selectedIndex = -1;
+    bullets.each(function(index) {
+      if ($(this).prop("selected")) {
+        selectedIndex = index;
+      }
+    });
+    
+    return selectedIndex;
+  },
+  
   onPressedDown: function(e, detail) {
-    // TODO:
+    var selectedIndex = this.getSelectedBulletIndex();
+    var bullets =  $("todo-bullet");
+    
+    $(bullets.get(selectedIndex)).prop("selected", false);
+    $(bullets.get((selectedIndex + 1) % bullets.length)).prop("selected", true);
+  },
+   
+  onPressedUp: function(e, detail) {
+    var selectedIndex = this.getSelectedBulletIndex();
+    var bullets =  $("todo-bullet");
+    
+    $(bullets.get(selectedIndex)).prop("selected", false);
+    $(bullets.get((selectedIndex - 1) % bullets.length)).prop("selected", true);
   },
 });
 </script>
