@@ -1,0 +1,36 @@
+<link rel="import" href="../bower_components/polymer/polymer.html">
+  
+<dom-module id="todo-viewmodel"></dom-module>
+<script>
+  Polymer({
+    is: 'todo-viewmodel',
+    properties: {
+     model: {
+        type: Object,
+        value: {
+        selected: true,
+        content: "testing",  
+        bullets: [{
+          content: "sub testing1",
+          bullets: [{
+          content: "sub testing1",
+          bullets: []
+        }, {
+          content: "sub testing2",
+          bullets: []
+        }]
+        }, {
+          content: "sub testing2",
+          bullets: []
+        }]}}
+    },
+      
+    getBullet: function(id) {
+      if (id == 0) {
+        return this.model;
+      } else {
+        //TODO
+      }
+    },
+  });
+</script>

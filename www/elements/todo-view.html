@@ -1,0 +1,16 @@
+<link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="import" href="./todo-bullet.html">
+
+<dom-module id="todo-view">
+  <template>
+    <todo-bullet model={{model}}></todo-bullet>
+  </template>
+</dom-module>
+<script>
+  Polymer({
+    is: 'todo-view',
+    properties: {
+     model: Object
+    },
+  });
+</script>

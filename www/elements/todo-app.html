@@ -1,69 +1,61 @@
-<link rel="import" href="../bower_components/polymer/polymer.html">
-<link rel="import" href="./todo-bullet.html">
+<link rel="import" href="../bower_components/polymer/polymer.html">  
 <link rel="import" href="./todo-keyboard.html">
+<link rel="import" href="./todo-viewmodel.html">
+<link rel="import" href="./todo-view.html">
+  
 <script src="http://code.jquery.com/jquery-2.1.4.min.js"></script>
 
 <dom-module id="todo-app">
   <template>
+    <!-- Invisible elements -->
     <todo-keyboard id="keyboard" on-pressed-tab="onPressedTab" on-pressed-up="onPressedUp" on-pressed-down="onPressedDown"></todo-keyboard>
-    root:
-    <todo-bullet id="rootBullet" model="{{model}}"></todo-bullet>
+    <todo-viewmodel id="viewmodel"></todo-viewmodel>
+    <!-- Visible elements -->
+    <todo-view model="{{model}}"></todo-view>
   </template>
 </dom-module>
 <script>
-Polymer({
-  is: 'todo-app',
-  properties: {
-    model: {
-      type: Object,
-      value: {
-      selected: true,
-      content: "testing",  
-      bullets: [{
-        content: "sub testing1",
-        bullets: [{
-        content: "sub testing1",
-        bullets: []
-      }, {
-        content: "sub testing2",
-        bullets: []
-      }]
-      }, {
-        content: "sub testing2",
-        bullets: []
-      }]}}
-  },
+  Polymer({
+    is: 'todo-app',
     
-  onPressedTab: function(e, detail) {
-    this.$['rootBullet'].onIndent(detail.shift);
-  },
+    properties: {
+      model: Object
+    },
+    
+    ready: function() {
+      this.model = this.$.viewmodel;
+    },
   
-  getSelectedBulletIndex: function() {
-    var bullets = $("todo-bullet");
-    var selectedIndex = -1;
-    bullets.each(function(index) {
-      if ($(this).prop("selected")) {
-        selectedIndex = index;
-      }
-    });
+    onPressedTab: function(e, detail) {
+      //this.$['rootBullet'].onIndent(detail.shift);
+    },
     
-    return selectedIndex;
-  },
-  
-  onPressedDown: function(e, detail) {
-    var selectedIndex = this.getSelectedBulletIndex();
-    var bullets =  $("todo-bullet");
+    /*getSelectedBulletIndex: function() {
+      var bullets = $("todo-bullet");
+      var selectedIndex = -1;
+      bullets.each(function(index) {
+        if ($(this).prop("selected")) {
+          selectedIndex = index;
+        }
+      });
+      
+      return selectedIndex;
+    },*/
     
-    $(bullets.get(selectedIndex)).prop("selected", false);
-    $(bullets.get((selectedIndex + 1) % bullets.length)).prop("selected", true);
-  },
-   
-  onPressedUp: function(e, detail) {
-    var selectedIndex = this.getSelectedBulletIndex();
-    var bullets =  $("todo-bullet");
-    
-    $(bullets.get(selectedIndex)).prop("selected", false);
-    $(bullets.get((selectedIndex - 1) % bullets.length)).prop("selected", true);
-  },
-});
+    onPressedDown: function(e, detail) {
+      /*var selectedIndex = this.getSelectedBulletIndex();
+      var bullets =  $("todo-bullet");
+      
+      $(bullets.get(selectedIndex)).prop("selected", false);
+      $(bullets.get((selectedIndex + 1) % bullets.length)).prop("selected", true);*/
+    },
+     
+    onPressedUp: function(e, detail) {
+      /*var selectedIndex = this.getSelectedBulletIndex();
+      var bullets =  $("todo-bullet");
+      
+      $(bullets.get(selectedIndex)).prop("selected", false);
+      $(bullets.get((selectedIndex - 1) % bullets.length)).prop("selected", true);*/
+    }
+  });
 </script>
