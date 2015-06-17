@@ -3,7 +3,7 @@
 
 <dom-module id="todo-view">
   <template>
-    <todo-bullet model={{model}}></todo-bullet>
+    <todo-bullet bullet-model={{getRootBulletModel(model)}}></todo-bullet>
   </template>
 </dom-module>
 <script>
@@ -12,5 +12,9 @@
     properties: {
      model: Object
     },
+    
+    getRootBulletModel: function(model) {
+      return model.getRootBulletModel();
+    }
   });
 </script>

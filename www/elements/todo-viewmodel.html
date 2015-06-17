@@ -1,5 +1,5 @@
 <link rel="import" href="../bower_components/polymer/polymer.html">
-  
+
 <dom-module id="todo-viewmodel"></dom-module>
 <script>
   Polymer({
@@ -13,24 +13,37 @@
         bullets: [{
           content: "sub testing1",
           bullets: [{
-          content: "sub testing1",
-          bullets: []
-        }, {
-          content: "sub testing2",
-          bullets: []
-        }]
+            content: "sub sub testing1",
+            bullets: []
+          }, {
+            selected: true, 
+            content: "sub sub testing2",
+            bullets: []
+          }]
         }, {
           content: "sub testing2",
           bullets: []
         }]}}
     },
-      
-    getBullet: function(id) {
-      if (id == 0) {
-        return this.model;
-      } else {
-        //TODO
-      }
-    },
+    
+    getRootBulletModel: function() {
+      var BulletModel = function(node) {
+        this.getContent = function() {
+          return node.content;
+        };
+        
+        this.getSubBulletModels = function() {
+          return node.bullets.map(function(subNode) {
+            return new BulletModel(subNode);
+          });
+        };   
+        
+        this.getIsSelected = function() {
+          return node.selected === true;
+        };     
+      };
+             
+      return new BulletModel(this.model);
+    }   
   });
 </script>

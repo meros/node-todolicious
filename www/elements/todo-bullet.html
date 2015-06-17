@@ -2,8 +2,15 @@
 <dom-module id="todo-bullet">
   <template>
     <li>
-      <span>{{getContent(model, bulletid)}}</span>
-      <ul><li><span>TODO: subitems</span></li></ul>
+      <span>{{getContent(bulletModel)}}</span>
+      <template is="dom-if" if="{{getIsSelected(bulletModel)}}">
+        (selected)
+      </template>
+      <ul>
+        <template is="dom-repeat" items="{{getSubBulletModels(bulletModel)}}">
+          <todo-bullet bullet-model={{item}}></todo-bullet>
+        </template>
+      </ul>
     </li>
   </template>
 </dom-module>
@@ -11,15 +18,20 @@
   Polymer({
     is: 'todo-bullet',
     properties: {
-      bulletid: {
-        type: Number,
-        value: 0
-      },
-      model: Object
+      bulletModel: Object
+    },
+        
+    getContent: function(bulletModel) {
+      return bulletModel.getContent();
+    },    
+    
+    getSubBulletModels: function(bulletModel) {
+      return bulletModel.getSubBulletModels();
     },
     
-    getContent: function (model, bulletid) {
-      return model.getBullet(bulletid).content;
-    }  
-  });
+    getIsSelected: function(bulletModel) {
+      return bulletModel.getIsSelected();
+    }    
+    
+   });
 </script>
