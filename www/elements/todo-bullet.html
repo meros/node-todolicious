@@ -18,7 +18,10 @@
   Polymer({
     is: 'todo-bullet',
     properties: {
-      bulletModel: Object
+      bulletModel: {
+        type: Object,
+        observer: 'bulletModelChanged'
+      }
     },
         
     getContent: function(bulletModel) {
@@ -31,7 +34,15 @@
     
     getIsSelected: function(bulletModel) {
       return bulletModel.getIsSelected();
-    }    
+    },
+    
+    bulletModelChanged: function(bulletModel) {
+      var that = this;
+      bulletModel.onSelectedChanged = function() {
+        console.log(that.bulletModel.getContent() + " " + that.bulletModel.getIsSelected());
+        // TODO: make sure it is being redrawn!
+      };  
+    }
     
    });
 </script>

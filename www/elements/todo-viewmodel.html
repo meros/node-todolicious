@@ -27,7 +27,16 @@
     },
     
     getRootBulletModel: function() {
+      var polymerThat = this;  	
+        
       var BulletModel = function(node) {
+        var that = this;
+        polymerThat.addEventListener('selected-changed', function() {
+          if (that.onSelectedChanged) {
+            that.onSelectedChanged();  
+          }
+        });
+        
         this.getContent = function() {
           return node.content;
         };
@@ -44,6 +53,38 @@
       };
              
       return new BulletModel(this.model);
-    }   
+    },
+    
+    selectNext: function(forward) {
+      var flatten = function(node) {
+        var result = [node];
+        
+        node.bullets.forEach(function(subNode) {
+          flatten(subNode).forEach(function(flattenedSubNodes) {
+            result.push(flattenedSubNodes);
+          });
+        });     
+        
+        return result;
+      };
+      
+      var findSelectedIndex = function(arr) {
+        var result = null;
+        arr.some(function(el, i) {
+          return el.selected ? ((result = i), true) : false;
+        });
+          
+        return result;
+      }; 
+      
+      var flatBulletMap = flatten(this.model);
+      var selected = findSelectedIndex(flatBulletMap);
+      var newSelected = (selected + (forward?1:-1))% flatBulletMap.length;
+      
+      flatBulletMap[selected].selected = false;
+      flatBulletMap[newSelected].selected = true;
+      
+      this.fire("selected-changed", {oldSelected: flatBulletMap[selected], newSelected: flatBulletMap[newSelected]})
+    }
   });
 </script>

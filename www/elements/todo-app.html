@@ -43,6 +43,7 @@
     },*/
     
     onPressedDown: function(e, detail) {
+      this.$.viewmodel.selectNext(true);
       /*var selectedIndex = this.getSelectedBulletIndex();
       var bullets =  $("todo-bullet");
       
@@ -51,6 +52,7 @@
     },
      
     onPressedUp: function(e, detail) {
+      this.$.viewmodel.selectNext(false);
       /*var selectedIndex = this.getSelectedBulletIndex();
       var bullets =  $("todo-bullet");
       
