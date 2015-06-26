@@ -7,8 +7,10 @@
     properties: {
      model: {
         type: Object,
+        notify: true, 
+        readOnly: true,
         value: {
-        selected: true,
+        selected: false,
         content: "testing",  
         bullets: [{
           content: "sub testing1",
@@ -26,41 +28,13 @@
         }]}}
     },
     
-    getRootBulletModel: function() {
-      var polymerThat = this;  	
-        
-      var BulletModel = function(node) {
-        var that = this;
-        polymerThat.addEventListener('selected-changed', function() {
-          if (that.onSelectedChanged) {
-            that.onSelectedChanged();  
-          }
-        });
-        
-        this.getContent = function() {
-          return node.content;
-        };
-        
-        this.getSubBulletModels = function() {
-          return node.bullets.map(function(subNode) {
-            return new BulletModel(subNode);
-          });
-        };   
-        
-        this.getIsSelected = function() {
-          return node.selected === true;
-        };     
-      };
-             
-      return new BulletModel(this.model);
-    },
-    
     selectNext: function(forward) {
-      var flatten = function(node) {
+      var flatten = function(node, path) {
         var result = [node];
+        node._path = path;
         
-        node.bullets.forEach(function(subNode) {
-          flatten(subNode).forEach(function(flattenedSubNodes) {
+        node.bullets.forEach(function(subNode, index) {
+          flatten(subNode, path + "." + index).forEach(function(flattenedSubNodes) {
             result.push(flattenedSubNodes);
           });
         });     
@@ -77,14 +51,21 @@
         return result;
       }; 
       
-      var flatBulletMap = flatten(this.model);
+      var flatBulletMap = flatten(this.model, "model");
       var selected = findSelectedIndex(flatBulletMap);
-      var newSelected = (selected + (forward?1:-1))% flatBulletMap.length;
+      var newSelected = (selected + (forward?1:-1)) % flatBulletMap.length;
+      if (newSelected < 0) {
+        newSelected = newSelected + flatBulletMap.length;
+      }
+      
       
       flatBulletMap[selected].selected = false;
       flatBulletMap[newSelected].selected = true;
       
-      this.fire("selected-changed", {oldSelected: flatBulletMap[selected], newSelected: flatBulletMap[newSelected]})
-    }
+      console.log(this.model);
+  
+      this.notifyPath(flatBulletMap[selected]._path + ".selected", flatBulletMap[selected].selected);
+      this.notifyPath(flatBulletMap[newSelected]._path + ".selected", flatBulletMap[newSelected].selected);
+  }
   });
 </script>

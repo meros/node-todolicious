@@ -2,12 +2,13 @@
 <dom-module id="todo-bullet">
   <template>
     <li>
-      <span>{{getContent(bulletModel)}}</span>
-      <template is="dom-if" if="{{getIsSelected(bulletModel)}}">
+      <span>{{selected}}</span>
+      <span>{{bulletModel.content}}</span>
+      <template is="dom-if" if="{{bulletModel.selected}}">
         (selected)
       </template>
       <ul>
-        <template is="dom-repeat" items="{{getSubBulletModels(bulletModel)}}">
+        <template is="dom-repeat" items="{{bulletModel.bullets}}">
           <todo-bullet bullet-model={{item}}></todo-bullet>
         </template>
       </ul>
@@ -18,31 +19,15 @@
   Polymer({
     is: 'todo-bullet',
     properties: {
-      bulletModel: {
-        type: Object,
-        observer: 'bulletModelChanged'
-      }
+      bulletModel: Object
     },
-        
-    getContent: function(bulletModel) {
-      return bulletModel.getContent();
-    },    
-    
-    getSubBulletModels: function(bulletModel) {
-      return bulletModel.getSubBulletModels();
-    },
-    
-    getIsSelected: function(bulletModel) {
-      return bulletModel.getIsSelected();
-    },
-    
-    bulletModelChanged: function(bulletModel) {
-      var that = this;
-      bulletModel.onSelectedChanged = function() {
-        console.log(that.bulletModel.getContent() + " " + that.bulletModel.getIsSelected());
-        // TODO: make sure it is being redrawn!
-      };  
+      observe: {
+    'bulletModel.selected': 'test'
+  },
+    test: function() {
+      alert("asdf");
     }
-    
+  
+
    });
 </script>
