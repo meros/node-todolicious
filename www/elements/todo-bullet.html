@@ -2,14 +2,13 @@
 <dom-module id="todo-bullet">
   <template>
     <li>
-      <span>{{selected}}</span>
-      <span>{{bulletModel.content}}</span>
-      <template is="dom-if" if="{{bulletModel.selected}}">
+      <span>{{model.content}}</span>
+      <template is="dom-if" if="{{model.selected}}">
         (selected)
       </template>
       <ul>
-        <template is="dom-repeat" items="{{bulletModel.bullets}}">
-          <todo-bullet bullet-model={{item}}></todo-bullet>
+        <template is="dom-repeat" items="{{model.bullets}}">
+          <todo-bullet model={{item}}></todo-bullet>
         </template>
       </ul>
     </li>
@@ -19,15 +18,7 @@
   Polymer({
     is: 'todo-bullet',
     properties: {
-      bulletModel: Object
-    },
-      observe: {
-    'bulletModel.selected': 'test'
-  },
-    test: function() {
-      alert("asdf");
+      model: Object
     }
-  
-
    });
 </script>

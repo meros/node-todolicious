@@ -7,8 +7,7 @@
     properties: {
      model: {
         type: Object,
-        notify: true, 
-        readOnly: true,
+        notify: true,
         value: {
         selected: false,
         content: "testing",  
@@ -34,7 +33,7 @@
         node._path = path;
         
         node.bullets.forEach(function(subNode, index) {
-          flatten(subNode, path + "." + index).forEach(function(flattenedSubNodes) {
+          flatten(subNode, path + ".bullets." + index).forEach(function(flattenedSubNodes) {
             result.push(flattenedSubNodes);
           });
         });     
