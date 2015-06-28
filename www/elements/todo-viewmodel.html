@@ -1,73 +1,102 @@
 <link rel="import" href="../bower_components/polymer/polymer.html">
-
 <dom-module id="todo-viewmodel"></dom-module>
 <script>
-  Polymer({
-    is: 'todo-viewmodel',
-    properties: {
-     model: {
-        type: Object,
-        notify: true,
-        value: {
-        selected: false,
-        content: "testing",  
-        bullets: [{
-          content: "sub testing1",
+	  /* global Polymer */
+   Polymer({
+      is: 'todo-viewmodel',
+      properties: {
+       model: {
+          type: Object,
+          notify: true,
+          value: {
+          selected: false,
+          content: "testing",  
           bullets: [{
-            content: "sub sub testing1",
-            bullets: []
+            content: "sub testing1",
+            bullets: [{
+              content: "sub sub testing1",
+              bullets: []
+            }, {
+              selected: true, 
+              content: "sub sub testing2",
+              bullets: []
+            }]
           }, {
-            selected: true, 
-            content: "sub sub testing2",
+            content: "sub testing2",
             bullets: []
-          }]
-        }, {
-          content: "sub testing2",
-          bullets: []
-        }]}}
-    },
-    
-    selectNext: function(forward) {
-      var flatten = function(node, path) {
-        var result = [node];
-        node._path = path;
-        
-        node.bullets.forEach(function(subNode, index) {
-          flatten(subNode, path + ".bullets." + index).forEach(function(flattenedSubNodes) {
-            result.push(flattenedSubNodes);
-          });
-        });     
-        
-        return result;
-      };
+          }]}}
+      },
       
-      var findSelectedIndex = function(arr) {
-        var result = null;
-        arr.some(function(el, i) {
-          return el.selected ? ((result = i), true) : false;
-        });
+      selectNext: function(forward) {
+        var flatten = function(node, path) {
+          var result = [node];
+          node._path = path;
           
-        return result;
-      }; 
-      
-      var flatBulletMap = flatten(this.model, "model");
-      var selected = findSelectedIndex(flatBulletMap);
-      var newSelected = (selected + (forward?1:-1)) % flatBulletMap.length;
-      if (newSelected < 0) {
-        newSelected = newSelected + flatBulletMap.length;
+          node.bullets.forEach(function(subNode, index) {
+            flatten(subNode, path + ".bullets." + index).forEach(function(flattenedSubNodes) {
+              result.push(flattenedSubNodes);
+            });
+          });     
+          
+          return result;
+        };
+        
+        var findSelectedIndex = function(arr) {
+          var result = null;
+          arr.some(function(el, i) {
+            return el.selected ? ((result = i), true) : false;
+          });
+            
+          return result;
+        }; 
+        
+        var flatBulletMap = flatten(this.model, "model");
+        var selected = findSelectedIndex(flatBulletMap);
+        var newSelected = (selected + (forward?1:-1)) % flatBulletMap.length;
+        if (newSelected < 0) {
+          newSelected = newSelected + flatBulletMap.length;
+        }
+        
+        
+        flatBulletMap[selected].selected = false;
+        flatBulletMap[newSelected].selected = true;
+        
+        console.log(this.model);
+    
+        this.notifyPath(flatBulletMap[selected]._path + ".selected", flatBulletMap[selected].selected);
+        this.notifyPath(flatBulletMap[newSelected]._path + ".selected", flatBulletMap[newSelected].selected);
+      },
+      splitBulletAtCaret: function() {
+              var flatten = function(node, path) {
+          var result = [node];
+          node._path = path;
+          
+          node.bullets.forEach(function(subNode, index) {
+            flatten(subNode, path + ".bullets." + index).forEach(function(flattenedSubNodes) {
+              result.push(flattenedSubNodes);
+            });
+          });     
+          
+          return result;
+        };
+        
+        var findSelectedIndex = function(arr) {
+          //TODO: poc
+          var result = null;
+          arr.some(function(el, i) {
+            return el.selected ? ((result = i), true) : false;
+          });
+            
+          return result;
+        }; 
+        
+        var flatBulletMap = flatten(this.model, "model");
+        var selected = findSelectedIndex(flatBulletMap);
+        
+        var beforeCaret = flatBulletMap[selected].content.substring(0, flatBulletMap[selected].caretPosition);
+        var afterCaret = flatBulletMap[selected].content.substring(flatBulletMap[selected].caretPosition);
+        
+        alert("splitBulletAtCaret " + beforeCaret + ", " + afterCaret) ;
       }
-      
-      
-      flatBulletMap[selected].selected = false;
-      flatBulletMap[newSelected].selected = true;
-      
-      console.log(this.model);
-  
-      this.notifyPath(flatBulletMap[selected]._path + ".selected", flatBulletMap[selected].selected);
-      this.notifyPath(flatBulletMap[newSelected]._path + ".selected", flatBulletMap[newSelected].selected);
-    },
-    splitBulletAtCaret: function() {
-      alert("createNewAfterSelected");
-    }
-  });
+    });
 </script>

@@ -2,7 +2,7 @@
 <dom-module id="todo-bullet">
   <template>
     <li>
-      <input id="input" value="{{model.content::input}}"></input>
+      <input id="input" value="{{model.content::input}}" on-keyup="onUpdateCaretPosition"></input>
       <template is="dom-if" if="{{model.selected}}">
         (selected)
       </template>
@@ -34,6 +34,10 @@
         this.$.input.focus();
         this.$.input.setSelectionRange(0,0);
       }
+    },
+    
+    onUpdateCaretPosition: function() {
+      this.model.caretPosition = this.$.input.selectionStart;
     }
    });
 </script>
