@@ -1,29 +1,29 @@
 <link rel="import" href="../bower_components/polymer/polymer.html">
 <dom-module id="todo-keyboard">
-    <template>
-    </template>
+    <template></template>
 </dom-module>
 <script>
-Polymer({
-    is: 'todo-keyboard',
-    created: function() {
-        var that = this;
-        var keys = {
-            9: 'pressed-tab', // TAB
-            38: 'pressed-up', // UP
-            40: 'pressed-down' // DOWN
-        };
-
-        document.onkeydown = function(e) {
-            if (e.keyCode in keys) {
-                that.fire(
-                    keys[e.keyCode], {
-                        shift: !!e.shiftKey,
-                        alt: !!e.altKey,
-                        ctrl: !!e.ctrlKey});
-                e.preventDefault();
-            }
-        };        
-    }
-});
+    Polymer({
+        is: 'todo-keyboard',
+        created: function() {
+            var that = this;
+            var keys = {
+                9: 'pressed-tab', // TAB
+                13: 'pressed-enter', // ENTER
+                38: 'pressed-up', // UP
+                40: 'pressed-down' // DOWN
+            };
+    
+            document.onkeydown = function(e) {
+                if (e.keyCode in keys) {
+                    that.fire(
+                        keys[e.keyCode], {
+                            shift: !!e.shiftKey,
+                            alt: !!e.altKey,
+                            ctrl: !!e.ctrlKey});
+                    e.preventDefault();
+                }
+            };        
+        }
+    });
 </script>
