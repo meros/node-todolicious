@@ -86,15 +86,13 @@
         
         var parent = this.get(parentPath);
         console.log(parent);
-//        var indexOfInsertedBullet = parent.bullets.indexOf(selectedBullet) + 1;
+       var indexOfInsertedBullet = parent.bullets.indexOf(selectedBullet);
         
-        // TODO: at index...
-        this.set(selectedBullet._path + ".content", beforeCaret);
-        this.push(parentPath + ".bullets", {
-            content: afterCaret,
+        //TODO: if has children, add to children instead
+        this.set(selectedBullet._path + ".content", afterCaret);
+        this.splice(parentPath + ".bullets", indexOfInsertedBullet, 0, {
+            content: beforeCaret,
             bullets: []});
-            
-        // TODO: select new
       }
       
     });
