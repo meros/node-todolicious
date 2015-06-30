@@ -24,13 +24,18 @@
       }
     },
     
-      observers: [
-    'selectedChanged(model.selected)'
-  ],
-
-    
+    observers: [
+      'selectedChanged(model.selected)',
+      'modelChanged(model)'
+    ],
+        
+    modelChanged: function(model) {
+      this.selectedChanged(model.selected);
+    },
+  
     selectedChanged: function(selected) {
       if (selected) {
+        debugger;
         this.$.input.focus();
         this.$.input.setSelectionRange(0,0);
       }

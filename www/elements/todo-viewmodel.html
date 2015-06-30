@@ -83,9 +83,11 @@
         
         var parentBullet = this.get(parentPath);
         var indexOfInsertedBullet = parentBullet.bullets.indexOf(selectedBullet) + 1;
-        
+
+        this.set(selectedBullet._path + ".selected", false);        
         this.set(selectedBullet._path + ".content", beforeCaret);
         this.splice(parentPath + ".bullets", indexOfInsertedBullet, 0, {
+            selected: true,
             content: afterCaret,
             bullets: []});
       }
