@@ -51,47 +51,42 @@
           });
             
           return result;
-        },
+      },
       
-      selectNext: function(forward) {
+  	  selectNext: function(forward) {
         var flatBulletMap = this.getFlattenedArrayWithPaths();
-        var selected = this.findSelectedIndexInFlattened(flatBulletMap);
-        var newSelected = (selected + (forward?1:-1)) % flatBulletMap.length;
-        if (newSelected < 0) {
-          newSelected = newSelected + flatBulletMap.length;
+        var oldSelectedIndex = this.findSelectedIndexInFlattened(flatBulletMap);
+        var newSelectedIndex = (oldSelectedIndex + (forward?1:-1)) % flatBulletMap.length;
+        if (newSelectedIndex < 0) {
+          newSelectedIndex = newSelectedIndex + flatBulletMap.length;
         }
         
-        
-        flatBulletMap[selected].selected = false;
-        flatBulletMap[newSelected].selected = true;
-        
-        this.notifyPath(flatBulletMap[selected]._path + ".selected", flatBulletMap[selected].selected);
-        this.notifyPath(flatBulletMap[newSelected]._path + ".selected", flatBulletMap[newSelected].selected);
+        this.set(flatBulletMap[oldSelectedIndex]._path + ".selected", false);
+        this.set(flatBulletMap[newSelectedIndex]._path + ".selected", true);
       },
       
       splitBulletAtCaret: function() {
-        var that = this;
         var flatBulletMap = this.getFlattenedArrayWithPaths();
-        var selected = this.findSelectedIndexInFlattened(flatBulletMap);
+        var selectedIndex = this.findSelectedIndexInFlattened(flatBulletMap);
+        var selectedBullet = flatBulletMap[selectedIndex];
         
-        var beforeCaret = flatBulletMap[selected].content.substring(0, flatBulletMap[selected].caretPosition);
-        var afterCaret = flatBulletMap[selected].content.substring(flatBulletMap[selected].caretPosition);
+        var beforeCaret = selectedBullet.content.substring(0, selectedBullet.caretPosition);
+        var afterCaret = selectedBullet.content.substring(selectedBullet.caretPosition);
         
-        var selectedBullet = flatBulletMap[selected];
+        // Find path of parent, or same path (if root or has children)
+        var path = selectedBullet._path;
+        if (selectedBullet.bullets.length === 0) {
+          var parentPath = path.replace(/\.bullets\.[0-9]+$/g, "");
+        } else {
+          parentPath = path;
+        }
         
-        var path = flatBulletMap[selected]._path;
-        var parentPath = path.replace(/\.bullets\.[0-9]+$/g, "");
-        console.log(path);
-        console.log(parentPath);
+        var parentBullet = this.get(parentPath);
+        var indexOfInsertedBullet = parentBullet.bullets.indexOf(selectedBullet) + 1;
         
-        var parent = this.get(parentPath);
-        console.log(parent);
-       var indexOfInsertedBullet = parent.bullets.indexOf(selectedBullet);
-        
-        //TODO: if has children, add to children instead
-        this.set(selectedBullet._path + ".content", afterCaret);
+        this.set(selectedBullet._path + ".content", beforeCaret);
         this.splice(parentPath + ".bullets", indexOfInsertedBullet, 0, {
-            content: beforeCaret,
+            content: afterCaret,
             bullets: []});
       }
       
