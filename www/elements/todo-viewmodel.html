@@ -1,30 +1,24 @@
 <link rel="import" href="../bower_components/polymer/polymer.html">
-<dom-module id="todo-viewmodel"></dom-module>
+<link rel="import" href="../bower_components/firebase-element-master/firebase-document.html">
+<dom-module id="todo-viewmodel">
+  <template>
+  <firebase-document location="https://luminous-torch-1990.firebaseio.com/bulletModel"
+ data={{model}}></firebase-document>
+ <span>{{test(model)}}</span>
+   </template>
+</dom-module>
 <script>
 	  /* global Polymer */
    Polymer({
       is: 'todo-viewmodel',
       properties: {
-       model: {
+        model: {
           type: Object,
-          notify: true,
-          value: {
-          selected: false,
-          content: "testing",  
-          bullets: [{
-            content: "sub testing1",
-            bullets: [{
-              content: "sub sub testing1",
-              bullets: []
-            }, {
-              selected: true, 
-              content: "sub sub testing2",
-              bullets: []
-            }]
-          }, {
-            content: "sub testing2",
-            bullets: []
-          }]}}
+          notify: true}
+      },
+      
+      test: function(data) {
+        return JSON.stringify(data);
       },
       
       getFlattenedArrayWithPaths: function() {
@@ -32,11 +26,13 @@
           var result = [node];
           node._path = path;
           
-          node.bullets.forEach(function(subNode, index) {
-            flatten(subNode, path + ".bullets." + index).forEach(function(flattenedSubNodes) {
-              result.push(flattenedSubNodes);
+          if (node.bullets) {
+            node.bullets.forEach(function(subNode, index) {
+              flatten(subNode, path + ".bullets." + index).forEach(function(flattenedSubNodes) {
+                result.push(flattenedSubNodes);
+              });
             });
-          });     
+          }
           
           return result;
         };
@@ -60,8 +56,9 @@
         if (newSelectedIndex < 0) {
           newSelectedIndex = newSelectedIndex + flatBulletMap.length;
         }
-        
-        this.set(flatBulletMap[oldSelectedIndex]._path + ".selected", false);
+        if (flatBulletMap[oldSelectedIndex]) {
+            this.set(flatBulletMap[oldSelectedIndex]._path + ".selected", false);
+        }
         this.set(flatBulletMap[newSelectedIndex]._path + ".selected", true);
       },
       
